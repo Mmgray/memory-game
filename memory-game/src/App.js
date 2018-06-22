@@ -1,36 +1,70 @@
 import React, { Component } from "react";
-import Card from "./components/Card";
+import GameCard from "./components/GameCard";
 import Wrapper from "./components/Wrapper";
-import Title from "./components/Title";
-import friends from "./friends.json";
+import Header from "./components/Header";
+import cards from "./cards.json";
 import "./App.css";
 
 class App extends Component {
-  // Setting this.state.friends to the friends json array
-  state = {
-    friends
+  constructor(props) {
+    super(props);
+    // Setting this.state.cards to the cards json array
+    this.state = {
+      cards: cards,
+      topScore: 0,
+      currentScore: 0
   };
+  this.checkIfClicked = this.checkIfClicked.bind(this);
+}
 
-  // randomFriend = id => {
-  //   // Filter this.state.friends for friends with an id not equal to the id being removed
-  //   const friends = this.state.friends.filter(friend => friend.id !== id);
-  //   // Set this.state.friends equal to the new friends array
-  //   this.setState({ friends });
-  // };
+//See if card has been clicked
+checkIfClicked(id) {
+  let clickedCard =this.state.cards.filter(card => card.id === id)[0];
 
-  // Map over this.state.friends and render a FriendCard component for each friend object
+  let cardsCopy = this.state.cards.slice().sort(function(a,b) {return 0.5 -Math.random()});
+
+if (!clickedCard.clicked) {
+  clickedCard.clicked = true;
+  cardsCopy[cardsCopy.findIndex((card) => card.id === id)] === clickedCard;
+
+  this.setState({
+    cards: cardsCopy,
+    currentScore: this.state.currentScore + 1,
+    topScore: (this.state.currentScore + 1 > this.state.topScore ? this.state.currentScore + 1 : this.state.topScore)
+  });
+}
+
+else {
+  let resetCardsCopy = cardsCopy.map((card) =>{
+    return{
+      id: card.id,
+      image: card.image,
+      clicked: false
+    }
+  });
+  this.setState({
+    cards: resetCardsCopy,
+    currentScore: 0
+  })
+}
+
+}
   render() {
     return (
+      <div className="container">
+        <Header currentScore={this.state.currentScore} topScore={this.state.topScore}/>
+             
       <Wrapper>
-        <Title>Cartoon Memory Game</Title>
-        {this.state.friends.map(friend => (
-          <Card
-            id={friend.id}
-            key={friend.id}
-            image={friend.image}
+        {this.state.cards.map(card => (
+          <GameCard
+          checkIfClicked= {this.checkIfClicked}
+            id={card.id}
+            key={card.id}
+            image={card.image}
           />
         ))}
       </Wrapper>
+      </div>
     );
   }
 }
