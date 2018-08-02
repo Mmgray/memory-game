@@ -1,6 +1,6 @@
 # memory-game
 
-###How high can you score?
+How high can you score?
 
 -Select first card of choice. 
 
