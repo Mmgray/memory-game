@@ -1,8 +1,10 @@
-# memory-game
+# Cartoon memory game
 
 How high can you score?
 
--Select first card of choice. 
+-Select card of choice. 
+
+-Each time card is selected cards will shuffle.
 
 -Select each card only once to acheive the highest score.
 
